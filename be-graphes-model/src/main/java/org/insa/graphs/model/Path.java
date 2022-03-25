@@ -37,6 +37,7 @@ public class Path {
         List<Arc> arcs = new ArrayList<Arc>();
         // TODO:
         return new Path(graph, arcs);
+        
     }
 
     /**
@@ -198,11 +199,34 @@ public class Path {
      * 
      * @return true if the path is valid, false otherwise.
      * 
-     * @deprecated Need to be implemented.
      */
     public boolean isValid() {
-        // TODO:
-        return false;
+    	
+    	boolean critere = false;
+    	int i;
+    	
+        if(this.isEmpty())
+        {
+        	critere = true;
+        } 	
+        else if(this.size()==1)
+        {
+        	critere = true;
+        }
+        else if(arcs.get(0).getOrigin() == this.getOrigin())
+        {
+	        for(i = 0; i<this.arcs.size()-1 ; i++)
+	        {
+	        	if(arcs.get(i).getDestination() != arcs.get(i+1).getOrigin())
+	        	{
+	        		critere = false;
+	        	}
+	        	
+	        }
+        }
+        
+
+        return critere;
     }
 
     /**
@@ -210,11 +234,15 @@ public class Path {
      * 
      * @return Total length of the path (in meters).
      * 
-     * @deprecated Need to be implemented.
      */
     public float getLength() {
-        // TODO:
-        return 0;
+        float length = 0;
+        for(Arc arc :  arcs)
+        {
+        	length += arc.getLength();
+        	
+        }
+        return length;
     }
 
     /**
