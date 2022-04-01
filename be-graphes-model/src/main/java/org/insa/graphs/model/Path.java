@@ -209,7 +209,7 @@ public class Path {
         {
         	critere = true;
         } 	
-        else if(this.size()==1)
+        else if(this.size()==1 && this.arcs.isEmpty())
         {
         	critere = true;
         }
@@ -217,9 +217,14 @@ public class Path {
         {
 	        for(i = 0; i<this.arcs.size()-1 ; i++)
 	        {
-	        	if(arcs.get(i).getDestination() != arcs.get(i+1).getOrigin())
+	        	if(arcs.get(i).getDestination() == arcs.get(i+1).getOrigin())
+	        	{
+	        		critere = true;
+	        	}
+	        	else
 	        	{
 	        		critere = false;
+	        		break;
 	        	}
 	        	
 	        }
