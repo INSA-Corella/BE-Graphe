@@ -58,7 +58,7 @@ public abstract class ShortestPathAlgorithm extends AbstractAlgorithm<ShortestPa
 
     /**
      * Notify all observers that the destination has been reached.
-     * 
+     * ShortestPathAlgorithm
      * @param node Destination.
      */
     public void notifyDestinationReached(Node node) {
