@@ -21,6 +21,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         BinaryHeap<Label> tas = new BinaryHeap<Label>(); //Création du tas de l'algo
         Node nodeActuel = null;
         Label labelActuel = null;
+        
 
         for(Node n : data.getGraph().getNodes())
         {
@@ -31,7 +32,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         
         labels.get(data.getOrigin().getId()).setCout(0); //mise a 0 pour le cout de l'origine
         
-        //Tant que la destination n'est pas marquée
+        //Tant que la destination n'est pas marquée && que le tas n'est pas vide
         while(!labels.get(data.getDestination().getId()).isMarque() && !tas.isEmpty())
         {
         	labelActuel = tas.deleteMin();
@@ -39,19 +40,29 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	labelActuel.setMarque(true); //Passage du noeud a true
         	for(Arc a : nodeActuel.getSuccessors())
         	{
-        		Node nodeSuivant = a.getDestination();
-        		Label labelSuivant = labels.get(nodeSuivant.getId());
-        		
-        		if(!labelSuivant.isMarque())         			//Si le noeud suivant n'est pas marqué alors 
+        		if(data.isAllowed(a))
         		{
-        			float coutPrecedent = labelSuivant.getCost(); //On enregistre le cout avant, pour voir si il a été changé après
-        			labelSuivant.setCout(Math.min(labelSuivant.getCost(), labelActuel.getCost()+a.getLength())); //On voit si le chemin en passant par le noeud actuel est plus court que le cout du chemin actuel
-        			if(coutPrecedent != labelSuivant.getCost()) //Si le cout a été modifié alors
-        			{
-        				tas.insert(labelSuivant);
-        				labelSuivant.setPere(a);;        				
-        			}
-        		}        		
+            		Node nodeSuivant = a.getDestination();
+            		Label labelSuivant = labels.get(nodeSuivant.getId());
+            		
+            		if(!labelSuivant.isMarque())         			//Si le noeud suivant n'est pas marqué alors 
+            		{
+            			float coutPrecedent = labelSuivant.getCost(); //On enregistre le cout avant, pour voir si il a été changé après
+            			labelSuivant.setCout(Math.min(labelSuivant.getCost(), labelActuel.getCost()+(float)data.getCost(a))); //On voit si le chemin en passant par le noeud actuel est plus court que le cout du chemin actuel
+            			
+            			if(coutPrecedent != labelSuivant.getCost()) //Si le cout a été modifié alors
+            			{
+            				// si le cout a été modifié, c'est qu'il se trouve déjà dans le tas
+            				// s'il est dans le tas, on le remplace (remove et insert)
+            				
+            				// LA COMPARAISON NE FONCTIONNE PAS
+            				if(labelSuivant.getCost() < Float.MAX_VALUE)
+	                			tas.remove(labelSuivant);
+            				tas.insert(labelSuivant);
+            				labelSuivant.setPere(a);;        				
+            			}
+            		}
+        		}		
         	}
         }
         
