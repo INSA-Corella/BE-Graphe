@@ -1,6 +1,6 @@
 package org.insa.graphs.model;
 
-public class Label {
+public class Label implements Comparable<Label>{
 	
 	private Node sommetCourant;
 	private boolean marque;
@@ -51,8 +51,17 @@ public class Label {
 	public Arc getPere() {
 		return this.pere;
 	}
-	
-	
+
+
+	@Override
+	public int compareTo(Label l) {
+		if(this.cout > l.cout)
+			return 1;
+		else if (this.cout == l.cout)
+			return 0;
+		else
+			return -1;
+	}
 
 
 }
