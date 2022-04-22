@@ -31,6 +31,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         tas.insert(labels.get(data.getOrigin().getId())); //Insert origin dans le tas
         
         labels.get(data.getOrigin().getId()).setCout(0); //mise a 0 pour le cout de l'origine
+        this.notifyOriginProcessed(data.getOrigin());
         
         //Tant que la destination n'est pas marquée && que le tas n'est pas vide
         while(!labels.get(data.getDestination().getId()).isMarque() && !tas.isEmpty())
@@ -38,6 +39,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	labelActuel = tas.deleteMin();
         	nodeActuel = labelActuel.getSommetCourant(); //Recup mini du tas
         	labelActuel.setMarque(true); //Passage du noeud a true
+        	this.notifyNodeMarked(nodeActuel);
         	for(Arc a : nodeActuel.getSuccessors())
         	{
         		if(data.isAllowed(a))
@@ -53,6 +55,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             				// s'il est dans le tas, on le remplace (remove et insert)
             				if(labelSuivant.getCost() < Float.MAX_VALUE)
             					tas.remove(labelSuivant);
+            				else
+            					this.notifyNodeReached(nodeSuivant);
             				//On voit si le chemin en passant par le noeud actuel est plus court que le cout du chemin actuel
                 			labelSuivant.setCout(Math.min(labelSuivant.getCost(), labelActuel.getCost()+(float)data.getCost(a)));
                 			tas.insert(labelSuivant);
@@ -71,6 +75,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         else
         {
         	System.out.println("Chemin trouvé !");
+        	this.notifyNodeReached(nodeActuel);
 	        // on remonte les pères
 	        nodeActuel = data.getDestination();
 	        // Create the path from the array of predecessors...
