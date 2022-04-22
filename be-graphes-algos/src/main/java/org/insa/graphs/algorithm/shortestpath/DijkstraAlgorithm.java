@@ -47,18 +47,15 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             		
             		if(!labelSuivant.isMarque())         			//Si le noeud suivant n'est pas marqué alors 
             		{
-            			float coutPrecedent = labelSuivant.getCost(); //On enregistre le cout avant, pour voir si il a été changé après
-            			labelSuivant.setCout(Math.min(labelSuivant.getCost(), labelActuel.getCost()+(float)data.getCost(a))); //On voit si le chemin en passant par le noeud actuel est plus court que le cout du chemin actuel
-            			
-            			if(coutPrecedent != labelSuivant.getCost()) //Si le cout a été modifié alors
+            			if(labelSuivant.getCost() > labelActuel.getCost()+(float)data.getCost(a))
             			{
             				// si le cout a été modifié, c'est qu'il se trouve déjà dans le tas
             				// s'il est dans le tas, on le remplace (remove et insert)
-            				
-            				// LA COMPARAISON NE FONCTIONNE PAS
             				if(labelSuivant.getCost() < Float.MAX_VALUE)
-	                			tas.remove(labelSuivant);
-            				tas.insert(labelSuivant);
+            					tas.remove(labelSuivant);
+            				//On voit si le chemin en passant par le noeud actuel est plus court que le cout du chemin actuel
+                			labelSuivant.setCout(Math.min(labelSuivant.getCost(), labelActuel.getCost()+(float)data.getCost(a)));
+                			tas.insert(labelSuivant);
             				labelSuivant.setPere(a);;        				
             			}
             		}
@@ -73,7 +70,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         }
         else
         {
-        	System.out.println("Chemin trouvé :");
+        	System.out.println("Chemin trouvé !");
 	        // on remonte les pères
 	        nodeActuel = data.getDestination();
 	        // Create the path from the array of predecessors...
