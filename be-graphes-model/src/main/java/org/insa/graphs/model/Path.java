@@ -2,6 +2,7 @@ package org.insa.graphs.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
  * </p>
  *
  */
-public class Path {
+public class Path implements Comparable<Path>{
 
     // Graph containing this path.
     private final Graph graph;
@@ -348,5 +349,19 @@ public class Path {
     	}
         return travelTime;
     }
+
+	@Override
+	public int compareTo(Path p) {
+		int result = -1;
+		result = 0;
+		System.out.println("Comparaison...");
+		for (int i = 0; i < this.arcs.size(); i++) {
+			if(!this.arcs.get(i).equals(p.getArcs().get(i)))
+			{
+				result = -1;
+			}
+		}
+		return result;
+	}
 
 }
