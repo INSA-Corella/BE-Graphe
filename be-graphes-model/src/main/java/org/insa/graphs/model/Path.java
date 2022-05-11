@@ -361,6 +361,18 @@ public class Path implements Comparable<Path>{
 				result = -1;
 			}
 		}
+		if(Float.compare(this.getLength(), p.getLength()) != 0)
+		{
+			result = -1;
+		}
+		if(Double.compare(this.getMinimumTravelTime(), p.getMinimumTravelTime()) != 0)
+		{
+			result = -1;
+		}
+		if(Double.compare(this.getTravelTime(2.5), p.getTravelTime(2.5)) != 0)
+		{
+			result = -1;
+		}
 		return result;
 	}
 
