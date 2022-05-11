@@ -99,5 +99,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         
         return solution;
     }
+    
+
+    protected LabelStar newLabel(Node n, ShortestPathData data)
+    {
+    	return new LabelStar(n, data.getDestination());
+    }
 
 }
