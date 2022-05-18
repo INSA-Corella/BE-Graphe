@@ -10,10 +10,13 @@ import java.util.List;
 
 import org.insa.graphs.algorithm.ArcInspector;
 import org.insa.graphs.algorithm.ArcInspectorFactory;
+import org.insa.graphs.algorithm.AbstractAlgorithm;
 import org.insa.graphs.algorithm.AbstractSolution.Status;
+import org.insa.graphs.algorithm.shortestpath.AStarAlgorithm;
 import org.insa.graphs.algorithm.shortestpath.BellmanFordAlgorithm;
 import org.insa.graphs.algorithm.shortestpath.DijkstraAlgorithm;
-import org.insa.graphs.algorithm.shortestpath.AStarAlgorithm;
+import org.insa.graphs.algorithm.shortestpath.ShortestPathAlgorithm;
+import org.insa.graphs.algorithm.shortestpath.DijkstraAlgorithm;
 import org.insa.graphs.algorithm.shortestpath.ShortestPathData;
 import org.insa.graphs.algorithm.shortestpath.ShortestPathSolution;
 import org.insa.graphs.model.Graph;
@@ -26,6 +29,12 @@ import org.insa.graphs.model.io.PathReader;
 import org.junit.Test;
 
 public class TestsPath {
+	
+	protected ShortestPathAlgorithm initializeAlgorithm(ShortestPathData sh)
+	
+	{
+		return new DijkstraAlgorithm(sh);
+	}
 
 	@Test
 	public void testChemin() throws IOException {
@@ -50,7 +59,7 @@ public class TestsPath {
 
         //    public ShortestPathData(Graph graph, Node origin, Node destination, ArcInspector arcInspector)
         ShortestPathData sh = new ShortestPathData(graph, origin, dest, ai.get(0));
-        AStarAlgorithm d = new AStarAlgorithm(sh);
+        ShortestPathAlgorithm d = initializeAlgorithm(sh);
         
         ShortestPathSolution solution = d.run();
         
@@ -77,7 +86,7 @@ public class TestsPath {
         
         //    public ShortestPathData(Graph graph, Node origin, Node destination, ArcInspector arcInspector)
         ShortestPathData sh = new ShortestPathData(graph, origin, dest, ai.get(0));
-        AStarAlgorithm d = new AStarAlgorithm(sh);
+        ShortestPathAlgorithm d = initializeAlgorithm(sh);
         
         ShortestPathSolution solution = d.run();
         
@@ -104,7 +113,7 @@ public class TestsPath {
         
         //    public ShortestPathData(Graph graph, Node origin, Node destination, ArcInspector arcInspector)
         ShortestPathData sh = new ShortestPathData(graph, origin, dest, ai.get(0));
-        AStarAlgorithm d = new AStarAlgorithm(sh);
+        ShortestPathAlgorithm d = initializeAlgorithm(sh);
         
         ShortestPathSolution solution = d.run();
         
@@ -138,7 +147,7 @@ public class TestsPath {
         ShortestPathData sh = new ShortestPathData(graph, origin, dest, ai.get(0));
         
         BellmanFordAlgorithm bel = new BellmanFordAlgorithm(sh);
-        AStarAlgorithm dij = new AStarAlgorithm(sh);
+        ShortestPathAlgorithm dij = initializeAlgorithm(sh);
         ShortestPathSolution solutionB = bel.run();
         ShortestPathSolution solutionD = dij.run();
         
@@ -148,41 +157,7 @@ public class TestsPath {
         
     }
     
-    @Test
-    public void testDijsktraAStar() throws IOException {
-        // Visit these directory to see the list of available files on Commetud.
-        final String mapName = "/mnt/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/insa.mapgr";
-        final String correctPathName = "/mnt/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Paths/path_fr31insa_rangueil_r2.path";
 
-        // Create a graph reader.
-        final GraphReader reader = new BinaryGraphReader(
-                new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
-
-        final Graph graph = reader.read();
-        
-        final PathReader pathReader = new BinaryPathReader(
-                new DataInputStream(new BufferedInputStream(new FileInputStream(correctPathName))));
-
-        final Path correctPath = pathReader.readPath(graph);
-        Node origin = correctPath.getOrigin();
-        Node dest = correctPath.getDestination();
-
-        List<ArcInspector> ai = ArcInspectorFactory.getAllFilters();
-        
-        
-        //    public ShortestPathData(Graph graph, Node origin, Node destination, ArcInspector arcInspector) {
-        ShortestPathData sh = new ShortestPathData(graph, origin, dest, ai.get(0));
-        
-        DijkstraAlgorithm dij = new DijkstraAlgorithm(sh);
-        AStarAlgorithm astar = new AStarAlgorithm(sh);
-        ShortestPathSolution solutionB = dij.run();
-        ShortestPathSolution solutionD = astar.run();
-        
-        
-        assertTrue((solutionB.getPath().compareTo(solutionD.getPath()) == 0));
-        
-        
-    }
     
     /*
     @Test
@@ -212,7 +187,7 @@ public class TestsPath {
         ShortestPathData sh = new ShortestPathData(graph, origin, dest, ai.get(5));
         
         BellmanFordAlgorithm bel = new BellmanFordAlgorithm(sh);
-        AStarAlgorithm dij = new AStarAlgorithm(sh);
+        DijkstraAlgorithm dij = initializeAlgorithm(sh);
         ShortestPathSolution solutionB = bel.run();
         ShortestPathSolution solutionD = dij.run();
         
@@ -247,7 +222,7 @@ public class TestsPath {
 
         //    public ShortestPathData(Graph graph, Node origin, Node destination, ArcInspector arcInspector)
         ShortestPathData sh = new ShortestPathData(graph, origin, dest, ai.get(4));
-        AStarAlgorithm d = new AStarAlgorithm(sh);
+        DijkstraAlgorithm d = initializeAlgorithm(sh);
         
         ShortestPathSolution solution = d.run();
         
