@@ -13,6 +13,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         super(data);
     }
 
+    protected Label newLabel(Node n, Node destination)
+    {
+    	return new Label(n);
+    }
+    
     @Override
     protected ShortestPathSolution doRun() {
         final ShortestPathData data = getInputData();
@@ -25,7 +30,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
         for(Node n : data.getGraph().getNodes())
         {
-        	labels.add(new Label(n));        	//Association label/node 
+        	labels.add(newLabel(n, data.getDestination()));        	//Association label/node 
         }
         
         tas.insert(labels.get(data.getOrigin().getId())); //Insert origin dans le tas
@@ -101,9 +106,5 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     }
     
 
-    protected LabelStar newLabel(Node n, ShortestPathData data)
-    {
-    	return new LabelStar(n, data.getDestination());
-    }
 
 }
