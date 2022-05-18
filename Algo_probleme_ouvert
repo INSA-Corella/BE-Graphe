@@ -1,0 +1,43 @@
+BUT : aller d'un point A à un point B en prenant en compte :
+- on est en voiture électrique qui a besoin d'être rechargée tous les 200km max
+- chaque rechargement coûte 10 min
+- les stations se situent sur chaque sommet d'autoroutes 
+Note : les variables sont notées en MAJUSCULE
+
+***** V1 ***** => en fonction de la distance
+
+Faire un A* de A à B
+S'il y a une solution :
+    Définir la variable ETAPES contenant les étapes du trajet
+    Définir la variable ETAPE contenant le sommet DEPART
+    Définir la variable CHEMIN
+    Tant que ETAPE != DESTINATION : 
+        Chercher sur la tranche de 200km autour du chemin la STATION la plus éloignée à partir de ETAPE
+        S'il y en a une :
+            On remplace ETAPE par sa valeur
+            On ajoute ETAPE à ETAPES
+        Sinon :
+            Sortir de la boucle 
+
+    Si on est sorti de la boucle (car on n'a pas reconstitué le chemin) :
+        Définir la variable DISTANCE_MIN et l'initialiser à l'infini positif
+        Définir la variable STATION_OPTI
+        Tant que ETAPE != DESTINATION : 
+            Récupérer toutes les STATIONS à 200km autour de l'ETAPE
+            Pour chaque STATION dans STATIONS : 
+                Calculer la distance à vol d'oiseau de ETAPE à STATION
+                Calculer la distance à vol d'oiseau de la STATION à DESTINATION
+                Si la somme SOMME est inférieure à la valeur dans DISTANCE_MIN :
+                    Enregistrer la STATION dans STATION_OPTI
+                    Enregistrer SOMME dans DISTANCE_MIN
+            Ajouter STATION_OPTI à ETAPES
+            Remplacer ETAPE par STATION_OPTI
+    Sinon :
+        La solution est trouvée
+
+    Pour i allant de 1 au nombre d'étapes dans ETAPES :
+        Faire un A* entre ETAPES[n-1] et ETAPES[n]
+        Ajouter le résultat au CHEMIN
+        Ajouter 10 min au trajet
+Sinon :
+    Retourner une erreur, il n'y a aucune solution
